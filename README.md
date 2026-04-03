@@ -2,7 +2,7 @@
 
 A powerful, self-hosted workflow automation platform that allows you to create multi-step automations triggered by external webhooks or time-based schedules. Inspired by platforms like Zapier and Make.com.
 
-![Workflow Automation Overview](photo/2.png)
+![Workflow Automation Dashboard](./photo/1.png)
 
 ## ✨ Key Features
 
@@ -146,6 +146,9 @@ The following environment variables are used across the services:
 ## 🔄 CI/CD Pipeline
 
 The project features a comprehensive Jenkins pipeline (`Jenkinsfile`) that automates:
+
+![Jenkins Pipeline Status](./photo/2.png)
+
 1.  **Security Scans**: Checking for sensitive files.
 2.  **Docker Build**: Building frontend and backend images.
 3.  **Health Checks**: Spinning up a temporary environment to verify API health.
@@ -158,6 +161,7 @@ The project features a comprehensive Jenkins pipeline (`Jenkinsfile`) that autom
 
 | Dashboard | Workflow Builder | History |
 | :---: | :---: | :---: |
-| ![Dashboard](photo/1.png) | ![Builder](photo/3.png) | ![History](photo/6.png) |    ## 📄 License
+| ![Dashboard](./photo/1.png) | ![Builder](./photo/10.png) | ![History](./photo/9.png) |
+## 📄 License
 
 This project is licensed under the MIT License.
