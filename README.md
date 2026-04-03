@@ -2,7 +2,7 @@
 
 A powerful, self-hosted workflow automation platform that allows you to create multi-step automations triggered by external webhooks or time-based schedules. Inspired by platforms like Zapier and Make.com.
 
-![Workflow Automation Overview](photo/Screenshot%202026-04-04%20032331.png)
+![Workflow Automation Overview](photo/2.png)
 
 ## ✨ Key Features
 
