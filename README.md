@@ -2,7 +2,7 @@
 
 A powerful, self-hosted workflow automation platform that allows you to create multi-step automations triggered by external webhooks or time-based schedules. Inspired by platforms like Zapier and Make.com.
 
-![Workflow Automation Dashboard](./photo/1.png)
+![Workflow Automation Dashboard](./photo/dashboard.png)
 
 ## ✨ Key Features
 
@@ -62,7 +62,7 @@ graph TD
 
 The easiest way to run the entire stack is using Docker Compose.
 
-![Docker-Compose Configuration](./photo/3.png)
+![Docker-Compose Configuration](./photo/docker-compose.png)
 
 1.  **Clone the repository**:
     ```bash
@@ -89,7 +89,7 @@ The easiest way to run the entire stack is using Docker Compose.
 
 The project includes production-ready Kubernetes manifests in the `k8s/` directory.
 
-![Kubernetes Manifests](./photo/8.png)
+![Kubernetes Manifests](./photo/k8s-manifest.png)
 
 ### Deploy to local cluster (e.g., Docker Desktop)
 
@@ -119,7 +119,7 @@ The project includes production-ready Kubernetes manifests in the `k8s/` directo
 
 The project features a comprehensive Jenkins pipeline (`Jenkinsfile`) that handles automated building, testing, and deployment.
 
-![Jenkins CI/CD Dashboard](./photo/2.png)
+![Jenkins CI/CD Dashboard](./photo/jenkins-dashboard.png)
 
 1.  **Security Scans**: Checking for sensitive files.
 2.  **Docker Build**: Building frontend and backend images.
@@ -133,4 +133,4 @@ The project features a comprehensive Jenkins pipeline (`Jenkinsfile`) that handl
 
 | Dashboard | Workflow Builder | History |
 | :---: | :---: | :---: |
-| ![Dashboard](./photo/1.png) | ![Builder](./photo/10.png) | ![History](./photo/9.png) |
+| ![Dashboard](./photo/dashboard.png) | ![Builder](./photo/builder.png) | ![History](./photo/history.png) |
