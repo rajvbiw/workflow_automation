@@ -7,8 +7,6 @@
 
 **Nexus Flow** is a high-performance, self-hosted workflow automation platform designed to orchestrate complex task sequences. Whether triggered by external webhooks or precisely timed cron schedules, Nexus Flow ensures your automations run reliably at scale.
 
-![Nexus Flow Dashboard](./photo/dashboard.png)
-
 ---
 
 ## 🔥 Key Features
@@ -101,8 +99,6 @@ graph TD
 
 Nexus Flow is ready for the cloud with pre-configured manifests in the `k8s/` directory.
 
-![Kubernetes Infrastructure](./photo/k8s-manifest.png)
-
 ### Deploying to a Cluster
 ```bash
 # 1. Enter the namespace
@@ -119,9 +115,7 @@ kubectl rollout status deployment/backend -n nexus-flow
 
 ## 🔄 CI/CD Jenkins Pipeline
 
-The project includes a production-grade `Jenkinsfile` for automated lifecycle management.
-
-![Jenkins Pipeline View](./photo/jenkins-dashboard.png)
+The project features a comprehensive Jenkins pipeline (`Jenkinsfile`) that handles automated building, testing, and deployment.
 
 The pipeline automates:
 - **Security Scans**: Identifying sensitive environment leaks.
@@ -129,14 +123,6 @@ The pipeline automates:
 - **Integrity Testing**: Spawning a temporary environment for automated health checks.
 - **Registry Push**: Pushing tagged images to Docker Hub.
 - **K8s Rollout**: Rolling updates to the target Kubernetes cluster.
-
----
-
-## 📸 Screenshots
-
-| Dashboard | Workflow Builder | History |
-| :---: | :---: | :---: |
-| ![Dashboard](./photo/dashboard.png) | ![Builder](./photo/builder.png) | ![History](./photo/history.png) |
 
 ---
 
