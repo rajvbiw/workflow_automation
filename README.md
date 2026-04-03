@@ -1,131 +1,134 @@
-# 🚀 Workflow Automation Engine (Zapier Lite)
+# 🚀 Workflow Automation Engine (Nexus Flow)
 
-A powerful, self-hosted workflow automation platform that allows you to create multi-step automations triggered by external webhooks or time-based schedules. Inspired by platforms like Zapier and Make.com.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-green.svg)](https://nodejs.org/)
+[![Docker](https://img.shields.io/badge/Docker-Enabled-blue.svg)](https://www.docker.com/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-Ready-blue.svg)](https://kubernetes.io/)
 
-![Workflow Automation Dashboard](./photo/dashboard.png)
+**Nexus Flow** is a high-performance, self-hosted workflow automation platform designed to orchestrate complex task sequences. Whether triggered by external webhooks or precisely timed cron schedules, Nexus Flow ensures your automations run reliably at scale.
 
-## ✨ Key Features
-
--   **Trigger-Action Architecture**: Define complex workflows with a single trigger and multiple actions.
--   **Multiple Trigger Types**:
-    -   **Webhook**: Trigger workflows via external POST requests to a unique endpoint.
-    -   **Schedule (Cron)**: Run workflows periodically using standard cron syntax.
--   **Extensible Actions**:
-    -   **HTTP Request**: Call any external API with custom methods and payloads.
-    -   **Task Creation**: Mock action for internal task management.
--   **Execution History**: Detailed logs of every workflow run, including input/output data and success/failure status.
--   **User Management**: Secure authentication using JWT and Bcrypt.
--   **Scalable Backend**: Distributed architecture with dedicated workers and schedulers.
+![Nexus Flow Dashboard](./photo/dashboard.png)
 
 ---
 
-## 🏗 Architecture
+## 🔥 Key Features
 
-The system is built using a microservices-inspired architecture to ensure scalability and reliability.
+-   **🎯 Intelligent Triggers**: 
+    -   **Webhook Ingress**: Unique endpoint generation for external service integration (GitHub, Stripe, etc.).
+    -   **Temporal Scheduling**: Full cron-syntax support for periodic task execution.
+-   **⚡ Distributed Processing**: 
+    -   Leverages **Bull (Redis-backed)** for asynchronous job queuing.
+    -   Dedicated **Workers** for compute-heavy actions, ensuring the API remains responsive.
+-   **🛠 Extensible Action Suite**:
+    -   **Generic HTTP**: Full control over methods, headers, and payloads for API orchestration.
+    -   **Internal Tasking**: Mock action system for prototyping and internal logging.
+-   **📊 Observability**:
+    -   Real-time **Execution History** with detailed input/output payload tracking.
+    -   Success/Failure analytics and dashboard overviews.
+-   **🔐 Enterprise-Grade Security**:
+    -   JWT-based authentication with Bcrypt password hashing.
+    -   Environment-isolated configuration.
+
+---
+
+## 🏗 System Architecture
+
+Nexus Flow follows a modern microservices pattern, decoupling the API, the scheduler, and the task processor.
 
 ```mermaid
 graph TD
-    User((User)) -->|Interacts| Frontend[React Frontend]
-    Frontend -->|API Calls| Backend[Node.js API]
-    External((External Services)) -->|Webhook POST| Backend
+    Client((User/App)) -->|Interacts| API[Node.js Express API]
+    External((External Hooks)) -->|POST| API
     
-    Backend -->|Stores Config| Postgres[(PostgreSQL)]
-    Backend -->|Enqueues Jobs| Redis[(Redis / Bull)]
+    subgraph "Infrastructure Layer"
+        API -->|Config/Logs| DB[(PostgreSQL)]
+        API -->|Enqueue| Queue[(Redis / Bull Cluster)]
+        Cron[Cron Scheduler] -->|Trigger| Queue
+    end
     
-    Scheduler[Cron Scheduler] -->|Triggers Jobs| Redis
-    Redis -->|Processes Tasks| Worker[Background Worker]
-    
-    Worker -->|Updates Status| Postgres
-    Worker -->|Calls| ExternalAPI[External APIs]
+    subgraph "Execution Layer"
+        Queue -->|Fetch| Worker[Background Worker]
+        Worker -->|Update Status| DB
+        Worker -->|Execute| TargetAPI[External APIs]
+    end
 ```
 
 ---
 
 ## 🛠 Tech Stack
 
--   **Frontend**: React, Vite, Axios, React Router.
--   **Backend**: Node.js, Express, Bull (Queue), node-cron.
--   **Database**: PostgreSQL (Data persistence).
--   **Cache/Queue**: Redis (Message broker for workers).
--   **DevOps**: Docker, Docker Compose, Kubernetes, Jenkins.
+| Component | Technology | Description |
+| :--- | :--- | :--- |
+| **Frontend** | React + Vite | Fast, modern SPA with custom UI components. |
+| **Backend** | Node.js (Express) | High-concurrency API server. |
+| **Job Queue** | Bull / Redis | Distributed message broker for task persistence. |
+| **Database** | PostgreSQL | Relational storage for workflows and history. |
+| **DevOps** | Docker / K8s | Containerization and orchestration manifests. |
+| **CI/CD** | Jenkins | Automated pipeline for building, testing, and pushing. |
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting Started (Quick Start)
 
 ### Prerequisites
+- Docker & Docker Compose (v2.0+)
+- Node.js 18+ (for manual dev)
 
--   [Docker](https://www.docker.com/get-started) and [Docker Compose](https://docs.docker.com/compose/install/)
--   (Optional) [Kubernetes](https://kubernetes.io/) for production deployment.
+### 🐳 Run with Docker (Recommended)
 
-### Local Development (Docker Compose)
-
-The easiest way to run the entire stack is using Docker Compose.
-
-![Docker-Compose Configuration](./photo/docker-compose.png)
-
-1.  **Clone the repository**:
+1.  **Clone the Repository**:
     ```bash
     git clone <repository-url>
     cd workflow-automation
     ```
 
-2.  **Start the services**:
+2.  **Launch the Stack**:
     ```bash
     docker-compose up -d --build
     ```
 
-3.  **Access the application**:
-    -   **Frontend**: [http://localhost:8740](http://localhost:8740)
-    -   **Backend API**: [http://localhost:5000](http://localhost:5000)
+3.  **Access the Platform**:
+    -   **Portal**: [http://localhost:8740](http://localhost:8740)
+    -   **API Root**: [http://localhost:5000](http://localhost:5000)
 
-4.  **Default Credentials**:
-    -   **Email**: `admin@example.com`
-    -   **Password**: `admin`
-
----
-
-## ☸️ Kubernetes Deployment
-
-The project includes production-ready Kubernetes manifests in the `k8s/` directory.
-
-![Kubernetes Manifests](./photo/k8s-manifest.png)
-
-### Deploy to local cluster (e.g., Docker Desktop)
-
-1.  **Ensure your context is set**:
-    ```bash
-    kubectl config use-context docker-desktop
-    ```
-
-2.  **Create the namespace**:
-    ```bash
-    kubectl create namespace workflow-automation
-    ```
-
-3.  **Apply manifests**:
-    ```bash
-    kubectl apply -f k8s/ -n workflow-automation
-    ```
-
-4.  **Verify status**:
-    ```bash
-    kubectl get pods -n workflow-automation
-    ```
+4.  **Default Admin Login**:
+    -   **User**: `admin@example.com`
+    -   **Pass**: `admin`
 
 ---
 
-## 🔄 CI/CD Pipeline
+## ☸️ Kubernetes (Production Ready)
 
-The project features a comprehensive Jenkins pipeline (`Jenkinsfile`) that handles automated building, testing, and deployment.
+Nexus Flow is ready for the cloud with pre-configured manifests in the `k8s/` directory.
 
-![Jenkins CI/CD Dashboard](./photo/jenkins-dashboard.png)
+![Kubernetes Infrastructure](./photo/k8s-manifest.png)
 
-1.  **Security Scans**: Checking for sensitive files.
-2.  **Docker Build**: Building frontend and backend images.
-3.  **Health Checks**: Spinning up a temporary environment to verify API health.
-4.  **Docker Push**: Pushing tagged images to Docker Hub.
-5.  **K8s Deployment**: Rolling out updates to the Kubernetes cluster.
+### Deploying to a Cluster
+```bash
+# 1. Enter the namespace
+kubectl create namespace nexus-flow
+
+# 2. Apply all manifests (Secrets, PVCs, Services, Deployments)
+kubectl apply -f k8s/ -n nexus-flow
+
+# 3. Verify Rollouts
+kubectl rollout status deployment/backend -n nexus-flow
+```
+
+---
+
+## 🔄 CI/CD Jenkins Pipeline
+
+The project includes a production-grade `Jenkinsfile` for automated lifecycle management.
+
+![Jenkins Pipeline View](./photo/jenkins-dashboard.png)
+
+The pipeline automates:
+- **Security Scans**: Identifying sensitive environment leaks.
+- **Artifact Build**: Building optimized Docker images for frontend and backend.
+- **Integrity Testing**: Spawning a temporary environment for automated health checks.
+- **Registry Push**: Pushing tagged images to Docker Hub.
+- **K8s Rollout**: Rolling updates to the target Kubernetes cluster.
 
 ---
 
@@ -134,3 +137,18 @@ The project features a comprehensive Jenkins pipeline (`Jenkinsfile`) that handl
 | Dashboard | Workflow Builder | History |
 | :---: | :---: | :---: |
 | ![Dashboard](./photo/dashboard.png) | ![Builder](./photo/builder.png) | ![History](./photo/history.png) |
+
+---
+
+## 📂 Project Structure
+
+```text
+.
+├── backend/            # Express API, Bull Worker, Cron Scheduler
+├── frontend/           # React + Vite Application
+├── k8s/                # Production Kubernetes Manifests
+├── photo/              # Media Assets & Screenshots
+├── Docker-compose.yml  # Local Orchestration
+├── Jenkinsfile         # CI/CD Pipeline Definition
+└── init.sql            # Database Schema Initialization
+```
