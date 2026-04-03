@@ -161,7 +161,3 @@ The project features a comprehensive Jenkins pipeline (`Jenkinsfile`) that autom
 | ![Dashboard](photo/1.png) | ![Builder](photo/3.png) | ![History](photo/6.png) |
 
 ---
-
-## 📄 License
-
-This project is licensed under the MIT License.
