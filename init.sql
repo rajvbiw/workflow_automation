@@ -1,0 +1,31 @@
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS workflows (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  name VARCHAR(255) NOT NULL,
+  trigger_type VARCHAR(50) NOT NULL,
+  trigger_config JSONB NOT NULL,
+  action_type VARCHAR(50) NOT NULL,
+  action_config JSONB NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS executions (
+  id SERIAL PRIMARY KEY,
+  workflow_id INTEGER REFERENCES workflows(id) ON DELETE CASCADE,
+  status VARCHAR(50),
+  result JSONB,
+  executed_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Insert a default admin user (password = "admin", bcrypt hash generated for "admin")
+-- The hash below is for "admin" using bcrypt with salt rounds 10.
+INSERT INTO users (email, password_hash) 
+SELECT 'admin@example.com', '$2a$10$S/pqNTnfP5z7er34kQSdIuKjJqwxwZ8cWwz8/Zy6I4uV9yl0dbOCu'
+WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@example.com');
